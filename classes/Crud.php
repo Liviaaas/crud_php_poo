@@ -62,7 +62,7 @@ class Crud{
         if (empty($id) || empty($modelo) || empty($marca) || empty($placa) || empty($cor) || empty($ano)){
             return false;
         }
-        $query = "UPDATE". $this->table_name . " SET modelo = ?, marca = ?, placa = ?, cor = ?, ano = ? WHERE id = ?";
+        $query = "UPDATE ". $this->table_name . " SET modelo = ?, marca = ?, placa = ?, cor = ?, ano = ? WHERE id = ?";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(1,$modelo);
@@ -81,11 +81,23 @@ class Crud{
 
      //função para pegar os registros do banco e inserir no formulário
      public function readOne($id){
-        $query = "SELECT * FROM". $this->table_name . " WHERE id = ?";
+        $query = "SELECT * FROM ". $this->table_name . " WHERE id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    //  função function apagar os registros
+    public function delete($id){
+        $query = "DELETE FROM ". $this->table_name . " WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1,$id);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 ?>
